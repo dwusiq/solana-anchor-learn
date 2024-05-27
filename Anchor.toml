@@ -8,7 +8,7 @@ skip-lint = false
 # 直接复制programs中各个程序中的declare_id到这里
 [programs.localnet]
 program_transfer_sol = "CjoYx1gxc3jUSHVEVCuLHUzRiB6SFYbwquPo8x4Fkb8r"
-transfer_sol = "DB4iqb4KQ2CGquvV5UgJraVqvSGehUYiyiZKi258hcay"  
+cpi_transfer_sol = "DB4iqb4KQ2CGquvV5UgJraVqvSGehUYiyiZKi258hcay"  
 
 
 [registry]
