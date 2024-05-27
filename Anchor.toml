@@ -5,10 +5,10 @@ seeds = false
 skip-lint = false
 
 
-# 直接复制programs中各个程序中的declare_id到这里
 [programs.localnet]
+cpi_transfer_sol = "DB4iqb4KQ2CGquvV5UgJraVqvSGehUYiyiZKi258hcay"
 program_transfer_sol = "CjoYx1gxc3jUSHVEVCuLHUzRiB6SFYbwquPo8x4Fkb8r"
-cpi_transfer_sol = "DB4iqb4KQ2CGquvV5UgJraVqvSGehUYiyiZKi258hcay"  
+counter_anchor = "6mFGG3gPrtS7ZoGBdpBn8UgqXhhdr3LY1vgsjR9DatSJ"
 
 
 [registry]
@@ -16,10 +16,11 @@ url = "https://api.apr.dev"
 
 [provider]
 cluster = "http://127.0.0.1:8899"
-wallet = "~/.config/solana/id.json"
-
-[test.validator]
-url = "https://dark-intensive-dream.solana-mainnet.quiknode.pro/bcea36be83c7f3b3e1afbb625fa47048926bf67f/"
+wallet = "/Users/qiang/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+
+
+[test.validator]
+url = "https://dark-intensive-dream.solana-mainnet.quiknode.pro/bcea36be83c7f3b3e1afbb625fa47048926bf67f/"
