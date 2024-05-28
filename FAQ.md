@@ -34,4 +34,17 @@
     //do
     一般这个问题都是变更了相关的program名字导致的。尝试anchor clean 然后anchor build，如果仍存在，则需要检查残留的旧文件名，替换成新的，包括相应的keypair.json文件
 
+
+
+    //Q
+    invalid account data for instruction
+    //do
+    合约调用前(比如铸币)，未给用户创建对应的ATA地址。
+    const recipientAssociatedAccount: Account = await getOrCreateAssociatedTokenAccount(
+        connection,
+        owherKeypair, // 代币的Owner账户
+        splTokenMintKeyPair.publicKey, //代币Mint账户的PubKey
+        tokenRecipient,//接收者的pubKey
+        true
+    );
 ```
