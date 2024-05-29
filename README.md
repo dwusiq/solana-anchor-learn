@@ -8,6 +8,15 @@ solana程序不能只看rust代码怎么写，得结合ts的调用方法，才�
 * test: `anchor test --skip-local-validator`
 * 测试指定文件：`anchor test -t tests/counter-anchor.ts --verbose`
 
+### 术语
+
+* ATA(associated token account): 关联代币账户
+* SPL(Solana Program Library): 一组针对Sealevel并行运行时的链上程序的集合，其中包括了Token Program，简称为SPL Token
+* CPI(Cross-Program Invocation)：指合约见的调用，即跨合约调用
+* PDA(Program Derived Address): 是一种特殊的公钥地址（他没有私钥）,solana 设计的时候，将他的签名权限交给了生成他的程序
+* 
+
+
 
 
 ### `Anchor.toml`文件介绍

@@ -20,9 +20,9 @@
     
     //do ： 参考https://solana.com/developers/guides/getstarted/full-stack-solana-development
     //根据programId获得程序的大小(Data Length)
-    solana program show 6mFGG3gPrtS7ZoGBdpBn8UgqXhhdr3LY1vgsjR9DatSJ
+    solana program show 3GpnCihJzMELWMYNsbLDsPcSnbyqkbua3Wq7k1qSi7FH
     //根据程序的progarmId扩展大小(直接填上面查到的结果)
-    solana program extend 6mFGG3gPrtS7ZoGBdpBn8UgqXhhdr3LY1vgsjR9DatSJ 201000
+    solana program extend 3GpnCihJzMELWMYNsbLDsPcSnbyqkbua3Wq7k1qSi7FH 219192
     //直接执行测试命令，应该就能正常运行了
     anchor test --skip-local-validator
     
@@ -47,4 +47,14 @@
         tokenRecipient,//接收者的pubKey
         true
     );
+
+    //Q
+    Error: AnchorError occurred. Error Code: InstructionDidNotDeserialize. Error Number: 102. Error Message: The program could not deserialize the given instruction.
+    //do
+    入参跟合约定义的不相同
+
+    //Q
+  
+    //do
+
 ```

@@ -1,0 +1,74 @@
+use anchor_lang::prelude::*;
+use anchor_spl::token::{self, Mint, MintTo, Token, TokenAccount};
+
+declare_id!("3GpnCihJzMELWMYNsbLDsPcSnbyqkbua3Wq7k1qSi7FH");
+
+#[program]
+pub mod program_mint_spl {
+    use super::*;
+
+    pub fn mint_token_to(_ctx: Context<MintTokenTo>, _amount: u64) -> Result<()> {
+
+        // let authority_bump = _ctx.bumps.;
+        let authority_seeds = &[
+            &_ctx.accounts.token_mint.key().to_bytes(),
+            &_ctx.accounts.authority.key().to_bytes(),
+            AUTHORITY_SEED.as_bytes()
+        ];
+        let signer_seeds = &[&authority_seeds[..]];
+
+        // let signer_seeds: &[&[&[u8]]] = &[&[b"mint", &[&_ctx.accounts.authority.key().to_bytes()]]];
+// 
+        token::mint_to(_ctx.accounts.mint_tokens_context().with_signer(signer_seeds), _amount)?;
+        Ok(())
+    }
+}
+#[derive(Accounts)]
+pub struct MintTokenTo<'info> {
+    /// Contract mint amount of this token to user
+    pub token_mint: Box<Account<'info, Mint>>,
+    // This user pay fee
+    // #[account(mut,
+    //     constraint = payer.key() == ADMIN)]
+    // pub payer: Signer<'info>,
+    /// Use this account to save the user's token balance
+    //     #[account(
+    //     init_if_needed,
+    //     seeds = [
+    //         token_mint.key().as_ref(),
+    //         recipient.key().as_ref()
+    //     ],
+    //     bump,
+    //     payer = payer,
+    //     space = 1024,
+    // )]
+    #[account(mut)]
+    pub recipient: Account<'info, TokenAccount>,
+    #[account(mut)]
+    pub authority:  Account<'info, TokenAccount>,
+    //Mint token to this user
+    // #[account(mut)]
+    // recipient: SystemAccount<'info>,
+    /// Solana ecosystem accounts
+    pub token_program: Program<'info, Token>,
+    /// Solana ecosystem accounts
+    pub system_program: Program<'info, System>,
+}
+
+impl<'info> MintTokenTo<'info> {
+    fn mint_tokens_context(&self) -> CpiContext<'_, '_, '_, 'info, MintTo<'info>> {
+        CpiContext::new(
+            self.token_program.to_account_info(),
+            MintTo {
+                mint: self.token_mint.to_account_info(),
+                to: self.recipient.to_account_info(),
+                authority: self.authority.to_account_info(),
+            },
+        )
+    }
+}
+
+#[constant]
+pub const ADMIN: Pubkey = solana_program::pubkey!("2qHFZzJhvJyzp1xqNAvGgNi8cjmXuBgvHPUkXxzwL5yp");
+#[constant]
+pub const AUTHORITY_SEED: &str = "mint";

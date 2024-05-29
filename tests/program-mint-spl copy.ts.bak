@@ -1,0 +1,101 @@
+// import * as anchor from "@coral-xyz/anchor"
+// import { CpiTransferSol } from "../target/types/cpi_transfer_sol";
+// import {
+//     Keypair,
+//     PublicKey,
+//     LAMPORTS_PER_SOL,
+// } from "@solana/web3.js"
+// import { ProgramMintSpl } from "../target/types/program_mint_spl";
+// import { TOKEN_PROGRAM_ID, createMint, getOrCreateAssociatedTokenAccount } from "@solana/spl-token";
+// import { web3 } from "@coral-xyz/anchor";
+
+// describe("program-mint-spl", () => {
+//     const program = anchor.workspace.ProgramMintSpl as anchor.Program<ProgramMintSpl>//protrams的各个目录(一般一个程序一个program)，编译后的文件
+//     const provider = anchor.AnchorProvider.env();//在Anchor.toml的provider配置
+//     anchor.setProvider(provider);
+//     const connection = provider.connection;
+
+//     const ownerAccount = provider.wallet as anchor.Wallet//在Anchor.toml的provider.wallet配置
+//     // 从 anchor.Wallet 中获取 secretKey
+//     const tempArraySecret = Object.values(ownerAccount.payer.secretKey);
+//     const secret = new Uint8Array(tempArraySecret);
+
+//     // 使用 @solana/web3.js 的 Keypair.fromSecretKey 方法创建 Keypair
+//     const ownerKeypair = web3.Keypair.fromSecretKey(secret);
+//     // const authorityPubKey = ownerAccount.publicKey;
+
+
+//     //代币元数据
+//     const tokenMetadata = {
+//         tokenName: "My Test Spl Token",
+//         symbol: "MTST",
+//         tokenDecimal: 9,
+//         uri: ""
+//     }
+
+//     //专门给Token随机新建一个用户
+//     const splTokenMintKeyPair = new Keypair();
+//     const newProgramKeyPair = new Keypair();
+
+//     const mintTokenAuthority = PublicKey.findProgramAddressSync(
+//         [
+//             splTokenMintKeyPair.publicKey.toBuffer(),
+//             newProgramKeyPair.publicKey.toBuffer(),
+//             Buffer.from("mint"),
+//         ],
+//         TOKEN_PROGRAM_ID
+//     )[0];
+
+
+//     it("Create Spl-Token-2022", async () => {
+//         console.log(`program.programId,:${program.programId}`);
+//         //创建新的Token的Mint账户
+//         await createMint(
+//             connection,
+//             ownerKeypair, // 付款账户
+//             ownerAccount.publicKey, // 代币的创建者
+//             mintTokenAuthority, // 代币的授权者，可以为空
+//             tokenMetadata.tokenDecimal, // 代币的小数位数
+//             splTokenMintKeyPair,//代币Mint账户专有的KeyPair
+//         );
+//         console.log('Token created:', splTokenMintKeyPair.publicKey.toBase58());
+//     });
+
+
+//     //专门给新部署合约随机新建一个用户
+//     it("Mint program-mint-spl", async () => {
+//         console.log(`owner:${ownerAccount.publicKey}`);
+//         console.log(`contract:${newProgramKeyPair.publicKey}`);
+//         const recipientPair = new Keypair();
+//         const recipientATA = await getOrCreateATA(recipientPair.publicKey);//本次mint的接收账户（用户的ATA）
+//         await program.methods.mintTokenTo(new anchor.BN(10)).accounts({
+//             tokenMint: splTokenMintKeyPair.publicKey,
+//             // payer: ownerAccount.publicKey,
+//             authority: mintTokenAuthority,
+//             recipient: recipientATA.address,
+//             tokenProgram: TOKEN_PROGRAM_ID
+//         }).signers([newProgramKeyPair]).rpc();
+
+
+//         const recipientBalance = await connection.getTokenAccountBalance(recipientATA.address);
+//         console.log(`currentData-before:${recipientBalance.value.uiAmountString}`);
+//     });
+
+
+//     /**
+//      * 获取指定地址在该token下的ATA
+//      */
+//     async function getOrCreateATA(tokenHolderPubKey: PublicKey) {
+//         return await getOrCreateAssociatedTokenAccount(
+//             connection,
+//             ownerKeypair, // 创建这个ATA的付款账户
+//             splTokenMintKeyPair.publicKey, //代币Mint账户的PubKey
+//             tokenHolderPubKey,//该ATA账户的owner(即私钥生成的PubKey)
+//         );
+
+//     }
+
+
+
+
+// });
