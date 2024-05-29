@@ -81,6 +81,7 @@ export interface TestValues {
   id: PublicKey;
   admin: Keypair;
   poolKey:PublicKey;
+  poolAccountKey:PublicKey;
   mintAKeypair: Keypair;
   poolAuthority: PublicKey;
   mintLiquidity: PublicKey;
@@ -91,14 +92,23 @@ export interface TestValues {
 type TestValuesDefaults = {
   [K in keyof TestValues]+?: TestValues[K];
 };
-export function createValues(defaults?: TestValuesDefaults): TestValues {
+export function createValues(programId:PublicKey,defaults?: TestValuesDefaults): TestValues {
   const id = defaults?.id || Keypair.generate().publicKey;
   const admin = Keypair.generate();
-  const programId = anchor.workspace.ProgramMintSpl.programId;
+  // const programId = anchor.workspace.ProgramMintSpl.programId;
   const poolKey = PublicKey.findProgramAddressSync(
     [id.toBuffer()],
     programId
   )[0];
+
+  const poolAccountKey = PublicKey.findProgramAddressSync(
+    [
+      id.toBuffer(),
+      Buffer.from("pool"),
+    ],
+    programId
+  )[0];
+
 
 
   
@@ -124,6 +134,7 @@ export function createValues(defaults?: TestValuesDefaults): TestValues {
     id,
     admin,
     poolKey,
+    poolAccountKey,
     mintAKeypair,
     mintLiquidity,
     poolAuthority,
@@ -132,6 +143,6 @@ export function createValues(defaults?: TestValuesDefaults): TestValues {
       admin.publicKey,
       true
     ),
-    depositAmountA: new BN(4 * 10 ** 6)
+    depositAmountA: new BN(4 * 10 ** 9)
     };
 }

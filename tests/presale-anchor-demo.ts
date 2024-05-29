@@ -1,15 +1,22 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { expect } from "chai";
+import {
+  Keypair,
+  PublicKey,
+  LAMPORTS_PER_SOL,
+} from "@solana/web3.js"
 import { TestValues, createValues, mintingTokens } from "./utils";
-import { ProgramMintSpl } from "../target/types/program_mint_spl";
+import { PresaleAnchorDemo } from "../target/types/presale_anchor_demo";
 
-describe("Program Mint SPL", () => {
+describe("Presale Demo", () => {
   const provider = anchor.AnchorProvider.env();
   const connection = provider.connection;
   anchor.setProvider(provider);
 
-  const program = anchor.workspace.ProgramMintSpl as Program<ProgramMintSpl>;
+  const program = anchor.workspace.PresaleAnchorDemo as Program<PresaleAnchorDemo>;
+  const payer = provider.wallet as anchor.Wallet//在Anchor.toml的provider.wallet配置
+
 
   let values: TestValues;
 
@@ -26,6 +33,7 @@ describe("Program Mint SPL", () => {
       .createPool(values.id)
       .accounts({
         pool:values.poolKey,
+        poolAccount: values.poolAccountKey,
         poolAuthority: values.poolAuthority,
         mintLiquidity: values.mintLiquidity,
         // mintA: values.mintAKeypair.publicKey,
@@ -33,12 +41,15 @@ describe("Program Mint SPL", () => {
       .rpc();
   });
 
-  it("Mint SPL equal amounts", async () => {
+  it("Deposit sol and Mint", async () => {
+    await printBalances(payer.publicKey,values.poolAccountKey, "Before");
+
     await program.methods
       .depositLiquidity(values.depositAmountA)
       .accounts({
         poolAuthority: values.poolAuthority,
         depositor: values.admin.publicKey,
+        poolAccount: values.poolAccountKey,
         mintLiquidity: values.mintLiquidity,
         pool:values.poolKey,
         // mintA: values.mintAKeypair.publicKey,
@@ -53,5 +64,23 @@ describe("Program Mint SPL", () => {
     expect(depositTokenAccountLiquditiy.value.amount).to.equal(
       values.depositAmountA.toString()
     );
+
+    await printBalances(payer.publicKey,values.poolAccountKey, "After");
+
   });
+
+
+
+//打印相关钱包的SOL余额
+async function printBalances(payerPubkey: PublicKey,
+    recipientPubkey: PublicKey,
+    timeframe: string
+) {
+    let payerBalance = await provider.connection.getBalance(payerPubkey);
+    let recipientBalance = await provider.connection.getBalance(recipientPubkey);
+    console.log(`${timeframe} balances:`)
+    console.log(`   Payer: ${payerBalance / LAMPORTS_PER_SOL}`)
+    console.log(`   Recipient: ${recipientBalance / LAMPORTS_PER_SOL}`)
+}
+
 });
