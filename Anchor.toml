@@ -7,7 +7,7 @@ skip-lint = false
 [programs.localnet]
 counter_anchor = "6mFGG3gPrtS7ZoGBdpBn8UgqXhhdr3LY1vgsjR9DatSJ"
 cpi_transfer_sol = "DB4iqb4KQ2CGquvV5UgJraVqvSGehUYiyiZKi258hcay"
-program-mint-spl = "3GpnCihJzMELWMYNsbLDsPcSnbyqkbua3Wq7k1qSi7FH"
+program-mint-spl = "9naL5kvggxMms5morF1X9dzwayuB8FMBXP9eEnawCtMP"
 program_transfer_sol = "CjoYx1gxc3jUSHVEVCuLHUzRiB6SFYbwquPo8x4Fkb8r"
 
 [registry]

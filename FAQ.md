@@ -13,16 +13,15 @@
     cargo update -p solana-program@1.18.12 --precise  1.18.7
 
 
-
     //Q
     Error: Deploying program failed: RPC response error -32002: Transaction simulation failed: Error processing Instruction 0: account data too small for instruction [3 log messages]
     There was a problem deploying: Output { status: ExitStatus(unix_wait_status(256)), stdout: "", stderr: "" }.
     
     //do ： 参考https://solana.com/developers/guides/getstarted/full-stack-solana-development
     //根据programId获得程序的大小(Data Length)
-    solana program show 3GpnCihJzMELWMYNsbLDsPcSnbyqkbua3Wq7k1qSi7FH
+    solana program show 9naL5kvggxMms5morF1X9dzwayuB8FMBXP9eEnawCtMP
     //根据程序的progarmId扩展大小(直接填上面查到的结果)
-    solana program extend 3GpnCihJzMELWMYNsbLDsPcSnbyqkbua3Wq7k1qSi7FH 219192
+    solana program extend 9naL5kvggxMms5morF1X9dzwayuB8FMBXP9eEnawCtMP 216952
     //直接执行测试命令，应该就能正常运行了
     anchor test --skip-local-validator
     
@@ -54,7 +53,13 @@
     入参跟合约定义的不相同
 
     //Q
-  
+    Error: AnchorError occurred. Error Code: DeclaredProgramIdMismatch. Error Number: 4100. Error Message: The declared program id does not match the actual program id.
+    //do
+    重新生成target/deploy/xxx-keypair.json导致declare_id变化，因此可以用anchor keys list查看当前的declare_id并更新到lib.rs的值
+
+    //Q 
+    一直执行测试案例都报这个错，但是又找不到原因
+    Error: failed to send transaction: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x0
     //do
 
 ```
