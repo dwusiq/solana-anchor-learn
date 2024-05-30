@@ -1,0 +1,22 @@
+[toolchain]
+
+[features]
+seeds = false
+skip-lint = false
+
+[programs.localnet]
+mint_spl_with_program = "4tQznmypRWh9ro1EQXPz4r8FzJ3U6cW7tp4yyRa2YdbT"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "http://127.0.0.1:8899"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+
+
+[test.validator]
+url = "https://dark-intensive-dream.solana-mainnet.quiknode.pro/bcea36be83c7f3b3e1afbb625fa47048926bf67f/"
