@@ -4,14 +4,19 @@ use anchor_spl::{
     token::{self, Mint, MintTo, Token, TokenAccount},
 };
 
-use crate::{constants::{AUTHORITY_SEED, LIQUIDITY_SEED, PRESALE_ACCOUNT_SEED}, state::PresaleInfo};
+use crate::{
+    constants::{AUTHORITY_SEED, LIQUIDITY_SEED, PRESALE_ACCOUNT_SEED},
+    errors::PresaleError,
+    state::PresaleInfo,
+};
 use anchor_lang::system_program;
 
-
-pub fn pay_to_mint(
-    _ctx: Context<PayToMint>,
-    _amount: u64
-) -> Result<()> {
+pub fn pay_to_mint(_ctx: Context<PayToMint>, _amount: u64) -> Result<()> {
+    let presale_info = &mut _ctx.accounts.presale_info;
+    presale_info.received_sol = presale_info.received_sol.checked_add(_amount).unwrap();
+    if presale_info.received_sol > presale_info.receive_sol_max {
+        return err!(PresaleError::SoldOut);
+    }
 
     system_program::transfer(
         CpiContext::new(
@@ -24,10 +29,12 @@ pub fn pay_to_mint(
         _amount,
     )?;
 
+    let mint_amount = _amount / _ctx.accounts.presale_info.price;
+
     // Mint the liquidity to user
     let authority_bump = _ctx.bumps.token_mint_authority;
     let authority_seeds = &[
-        &_ctx.accounts.presale_info.id.to_bytes(),//key()
+        &_ctx.accounts.presale_info.id.to_bytes(), //key()
         AUTHORITY_SEED,
         &[authority_bump],
     ];
@@ -42,7 +49,7 @@ pub fn pay_to_mint(
             },
             signer_seeds,
         ),
-        _amount,
+        mint_amount,
     )?;
 
     Ok(())

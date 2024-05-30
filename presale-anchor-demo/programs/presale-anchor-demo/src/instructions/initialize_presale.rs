@@ -1,23 +1,29 @@
+use crate::{constants::PRESALE_ACCOUNT_SEED, state::PresaleInfo};
 use anchor_lang::prelude::*;
 use anchor_spl::{
     associated_token::AssociatedToken,
     token::{Mint, Token},
 };
-use crate::{constants::PRESALE_ACCOUNT_SEED, state::PresaleInfo};
-
 
 use crate::constants::{AUTHORITY_SEED, LIQUIDITY_SEED};
 
-pub fn initialize_presale(_ctx: Context<InitializePresale>, id: Pubkey) -> Result<()> {
+pub fn initialize_presale(
+    _ctx: Context<InitializePresale>,
+    _id: Pubkey,
+    _price: u64,
+    _receive_sol_max: u64,
+) -> Result<()> {
     let presale_info = &mut _ctx.accounts.presale_info;
-    presale_info.id = id;
+    presale_info.id = _id;
+    presale_info.owner = _ctx.accounts.owner.key();
+    presale_info.price = _price;
+    presale_info.receive_sol_max = _receive_sol_max;
     Ok(())
 }
 
 #[derive(Accounts)]
 #[instruction(id: Pubkey)]
 pub struct InitializePresale<'info> {
-
     /// CHECK: Read only authority
     #[account(
         seeds = [
@@ -51,7 +57,6 @@ pub struct InitializePresale<'info> {
     pub presale_mint: Box<Account<'info, Mint>>,
 
     // pub mint_a: Box<Account<'info, Mint>>,
-
     #[account(
         init,
         payer = payer,
@@ -62,6 +67,10 @@ pub struct InitializePresale<'info> {
         bump,
     )]
     pub presale_info: Account<'info, PresaleInfo>,
+
+    /// The admin of the PresaleInfo
+    /// CHECK: Read only, delegatable creation
+    pub owner: AccountInfo<'info>,
 
     /// The account paying for all rents
     #[account(mut)]

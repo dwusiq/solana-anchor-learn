@@ -18,83 +18,96 @@ export const generateSeededKeypair = (seed: string) => {
   );
 };
 
-export const expectRevert = async (promise: Promise<any>) => {
+// export const expectRevert = async (promise: Promise<any>) => {
+//   try {
+//     await promise;
+//     throw new Error("Expected a revert");
+//   } catch {
+//     return;
+//   }
+// };
+
+
+
+export async function expectRevert(func: Promise<any>, expectErrMsg: string) {
   try {
-    await promise;
+    await func
     throw new Error("Expected a revert");
-  } catch {
-    return;
+  } catch (ex) {
+    const msg = ex.msg;
+    if (msg != expectErrMsg)
+      throw new Error(`Error msg not match. left:${msg} right:${expectErrMsg}`);
   }
-};
+}
 
-export const mintingTokens = async ({
-  connection,
-  creator,
-  holder = creator,
-  mintAKeypair,
-  mintedAmount = 100,
-  decimals = 6,
-}: {
-  connection: Connection;
-  creator: Signer;
-  holder?: Signer;
-  mintAKeypair: Keypair;
-  mintedAmount?: number;
-  decimals?: number;
-}) => {
-  // Mint tokens
-  await connection.confirmTransaction(
-    await connection.requestAirdrop(creator.publicKey, 10 ** 10)
-  );
-  await createMint(
-    connection,
-    creator,
-    creator.publicKey,
-    creator.publicKey,
-    decimals,
-    mintAKeypair
-  );
+// export const mintingTokens = async ({
+//   connection,
+//   creator,
+//   holder = creator,
+//   mintAKeypair,
+//   mintedAmount = 100,
+//   decimals = 6,
+// }: {
+//   connection: Connection;
+//   creator: Signer;
+//   holder?: Signer;
+//   mintAKeypair: Keypair;
+//   mintedAmount?: number;
+//   decimals?: number;
+// }) => {
+//   // Mint tokens
+//   await connection.confirmTransaction(
+//     await connection.requestAirdrop(creator.publicKey, 10 ** 10)
+//   );
+//   await createMint(
+//     connection,
+//     creator,
+//     creator.publicKey,
+//     creator.publicKey,
+//     decimals,
+//     mintAKeypair
+//   );
 
-  await getOrCreateAssociatedTokenAccount(
-    connection,
-    holder,
-    mintAKeypair.publicKey,
-    holder.publicKey,
-    true
-  );
+//   await getOrCreateAssociatedTokenAccount(
+//     connection,
+//     holder,
+//     mintAKeypair.publicKey,
+//     holder.publicKey,
+//     true
+//   );
 
-  await mintTo(
-    connection,
-    creator,
-    mintAKeypair.publicKey,
-    getAssociatedTokenAddressSync(
-      mintAKeypair.publicKey,
-      holder.publicKey,
-      true
-    ),
-    creator.publicKey,
-    mintedAmount * 10 ** decimals
-  );
-};
+//   await mintTo(
+//     connection,
+//     creator,
+//     mintAKeypair.publicKey,
+//     getAssociatedTokenAddressSync(
+//       mintAKeypair.publicKey,
+//       holder.publicKey,
+//       true
+//     ),
+//     creator.publicKey,
+//     mintedAmount * 10 ** decimals
+//   );
+// };
 
 export interface TestValues {
   id: PublicKey;
-  admin: Keypair;
-  presaleInfoKey:PublicKey;
-  presaleInfoAccountKey:PublicKey;
+  buyer: Keypair;
+  presaleInfoKey: PublicKey;
+  presaleInfoAccountKey: PublicKey;
   mintAKeypair: Keypair;
   tokenMintAuthority: PublicKey;
   presaleMint: PublicKey;
-  depositAmountA: anchor.BN;
-  liquidityAccount: PublicKey;
+  // depositAmountA: anchor.BN;
+  buyerTokenAccount: PublicKey;
 }
 
 type TestValuesDefaults = {
   [K in keyof TestValues]+?: TestValues[K];
 };
-export function createValues(programId:PublicKey,defaults?: TestValuesDefaults): TestValues {
+export function createValues(programId: PublicKey, defaults?: TestValuesDefaults): TestValues {
   const id = defaults?.id || Keypair.generate().publicKey;
-  const admin = Keypair.generate();
+  const buyer = Keypair.generate();
   // const programId = anchor.workspace.ProgramMintSpl.programId;
   const presaleInfoKey = PublicKey.findProgramAddressSync(
     [id.toBuffer()],
@@ -111,7 +124,7 @@ export function createValues(programId:PublicKey,defaults?: TestValuesDefaults):
 
 
 
-  
+
   // Making sure tokens are in the right order
   const mintAKeypair = Keypair.generate();
   const tokenMintAuthority = PublicKey.findProgramAddressSync(
@@ -120,29 +133,29 @@ export function createValues(programId:PublicKey,defaults?: TestValuesDefaults):
       // mintAKeypair.publicKey.toBuffer(),
       Buffer.from("authority"),
     ],
-     programId
+    programId
   )[0];
   const presaleMint = PublicKey.findProgramAddressSync(
     [
       id.toBuffer(),
       Buffer.from("liquidity"),
     ],
-     programId
+    programId
   )[0];
 
   return {
     id,
-    admin,
+    buyer,
     presaleInfoKey,
     presaleInfoAccountKey,
     mintAKeypair,
     presaleMint,
     tokenMintAuthority,
-    liquidityAccount: getAssociatedTokenAddressSync(
+    buyerTokenAccount: getAssociatedTokenAddressSync(
       presaleMint,
-      admin.publicKey,
+      buyer.publicKey,
       true
     ),
-    depositAmountA: new BN(4 * 10 ** 9)
-    };
+    // depositAmountA: new BN(4 * 10 ** 9)
+  };
 }
