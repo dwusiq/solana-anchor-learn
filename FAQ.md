@@ -19,9 +19,9 @@
     
     //do ： 参考https://solana.com/developers/guides/getstarted/full-stack-solana-development
     //根据programId获得程序的大小(Data Length)
-    solana program show R45S53wpaL1uDeCS4P6Zqft9MzkKZXB2hBuZpV7A8T9
+    solana program show BJUyQNxymwAtZ9gcxsAkFqEY5UviX9moAcCRvDBguzu7
     //根据程序的progarmId扩展大小(直接填上面查到的结果)
-    solana program extend R45S53wpaL1uDeCS4P6Zqft9MzkKZXB2hBuZpV7A8T9 266016
+    solana program extend BJUyQNxymwAtZ9gcxsAkFqEY5UviX9moAcCRvDBguzu7 182952
 
     //直接执行测试命令，应该就能正常运行了
     anchor test --skip-local-validator
@@ -58,9 +58,11 @@
     //do
     重新生成target/deploy/xxx-keypair.json导致declare_id变化，因此可以用anchor keys list查看当前的declare_id并更新到lib.rs的值
 
-    //Q 
-    一直执行测试案例都报这个错，但是又找不到原因
-    Error: failed to send transaction: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x0
+    //Q solana-test-validator启动本地验证节点报错
+    Failed to get validator identity over RPC: error sending request for url (http://127.0.0.1:8899/): connection closed before message completed
     //do
+    我上次是因为开启了全局梯子‘proxy’，更改配置为'config'就可以了
+
+
 
 ```
