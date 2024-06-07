@@ -64,5 +64,11 @@
     我上次是因为开启了全局梯子‘proxy’，更改配置为'config'就可以了
 
 
-
+   //Q 配置cpi调用，编译报错
+   [2024-06-06T12:29:39.530631000Z ERROR cargo_build_sbf] Failed to obtain package metadata: `cargo metadata` exited with an error: error: no matching package named `klend` found
+    location searched: /Users/qiang/Codes/TmpCode/kamino-caller/programs/klend
+    required by package `kamino-caller v0.1.0 (/Users/qiang/Codes/TmpCode/kamino-caller/programs/kamino-caller)`
+    //do
+    大概率是引用的lib名字写错了，比如kamino_lending = {path="../klend", features=["cpi"]}
+    这里面的kamino_lending要填的是program名字klend，而kamino_lending要填的是klend中配置文件Cargo.toml的[lib]对应的program名字
 ```
