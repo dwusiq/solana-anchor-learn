@@ -27,13 +27,14 @@ describe("call-from", () => {
     ],
     callToProgram.programId
   )[0];
+  console.log("dataPDA",dataPDA);
 
 
   beforeEach(async () => {
-    // await callToProgram.methods.initialize().accounts({
-    //   dataAccount: dataPDA,
-    //   user: provider.wallet.publicKey,
-    // }).rpc();
+    await callToProgram.methods.initialize().accounts({
+      dataAccount: dataPDA,
+      user: provider.wallet.publicKey,
+    }).rpc();
   });
 
 

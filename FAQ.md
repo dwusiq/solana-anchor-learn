@@ -71,4 +71,15 @@
     //do
     大概率是引用的lib名字写错了，比如kamino_lending = {path="../klend", features=["cpi"]}
     这里面的kamino_lending要填的是program名字klend，而kamino_lending要填的是klend中配置文件Cargo.toml的[lib]对应的program名字
+
+
+    //Q 跨合约CPI调用，被调用合约在编译期间就报错：
+            Error: AnchorError caused by account: call_to_program. Error Code: InvalidProgramId. Error Number: 3008. Error Message: Program ID was not as expected.
+    Program log: Left:
+    Program log: HvgLZ4xcKY1YZ8u38zh1b6zsc8brGaM2A9RM73PafRWA
+    Program log: Right:
+    Program log: 2fMXp5XgFHrrRqMgrPjxzh98LMuc79pXRC82KUdKgYKe
+    //do 是因为我们没有被调用合约的keyPair.json文件，同时我们把被调用方的program目录引入到我们工程中，编译期间anchor就会为这个program生成一个新的keypair.json文件，导致两个地址不匹配，编译失败。
+    要解决这个问题，我们可以修改调用发起放根目录Anchor.toml文件，把被调用的合约地址注释掉，如:`# call_to = "2fMXp5XgFHrrRqMgrPjxzh98LMuc79pXRC82KUdKgYKe"`
+    
 ```
