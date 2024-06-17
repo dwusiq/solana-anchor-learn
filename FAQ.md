@@ -19,9 +19,9 @@
     
     //do ： 参考https://solana.com/developers/guides/getstarted/full-stack-solana-development
     //根据programId获得程序的大小(Data Length)
-    solana program show HHhZTKxN8hoNdTLAL6GpcZCbaJBE2ypJN2FLqe3Scihs
+    solana program show 3umsHbrUTKbgtJhuiihwnFFwmvn2AdXp8mmXFiW6UaQt
     //根据程序的progarmId扩展大小(直接填上面查到的结果)
-    solana program extend HHhZTKxN8hoNdTLAL6GpcZCbaJBE2ypJN2FLqe3Scihs 196552
+    solana program extend 3umsHbrUTKbgtJhuiihwnFFwmvn2AdXp8mmXFiW6UaQt 276128
 
     //直接执行测试命令，应该就能正常运行了
     anchor test --skip-local-validator
@@ -160,5 +160,6 @@
       'Program KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD consumed 12093 of 200000 compute units',
       'Program KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD failed: Cross-program invocation with unauthorized signer or writable account'
       //do
-      我当时的背景是，A合约通过CPI调用B合约，而B合约是已部署到链上的合约，它有个account入参是个PDA地址，并且这个字段有init修饰。我在实现A合约通过CPI调用B合约时，为了方便编写，直接将这个account这样定义：`pub user_metadata: AccountInfo<'info>`,没有任何修饰。  后来给这个字段加上mut修饰之后，就可以了
+      01、我当时的背景是，A合约通过CPI调用B合约，而B合约是已部署到链上的合约，它有个account入参是个PDA地址，并且这个字段有init修饰。我在实现A合约通过CPI调用B合约时，为了方便编写，直接将这个account这样定义：`pub user_metadata: AccountInfo<'info>`,没有任何修饰。  后来给这个字段加上mut修饰之后，就可以了
+      02、后来又碰到一次传递Signer<'info>的，同样报这个错，是因为被CPI调用的函数，定义Signer<'info>是有`#[account(mut)]`修饰的，而调用发起合约的对应account却没被定义为可修改
 ```
