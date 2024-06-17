@@ -19,9 +19,9 @@
     
     //do ： 参考https://solana.com/developers/guides/getstarted/full-stack-solana-development
     //根据programId获得程序的大小(Data Length)
-    solana program show 74HWyWPoV3fPsE1dmFCgxjJf3VUHPEb1QMRbV11AnJv6
+    solana program show HHhZTKxN8hoNdTLAL6GpcZCbaJBE2ypJN2FLqe3Scihs
     //根据程序的progarmId扩展大小(直接填上面查到的结果)
-    solana program extend 74HWyWPoV3fPsE1dmFCgxjJf3VUHPEb1QMRbV11AnJv6 216384
+    solana program extend HHhZTKxN8hoNdTLAL6GpcZCbaJBE2ypJN2FLqe3Scihs 196552
 
     //直接执行测试命令，应该就能正常运行了
     anchor test --skip-local-validator
@@ -128,8 +128,37 @@
       'Program log: 4QGA9ZC3UJYiVUydvm8BrfvzCaC2EcjyFHXj3vPVDJkr',
       'Program log: Right:',
       'Program log: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
-
     //do 
       这个问题是在合约部署之后，又在入参的struct，「如：Context<DepositKamino>中的DepositKamino」增加了新的字段导致的。
       合约部署之后，如果需要新增入参字段，就必须加在struct内所有属性的最后面，不能在中间增加，这样会使内存空间跟原来分配的不一致
+
+    //Q 合约部署时报错
+      Deploying program "leverage_kamino"...
+      Program path: /Users/qiang/Codes/Github/375Labs/Leverage-Kamino/target/deploy/leverage_kamino.so...
+      ===========================================================================
+      Recover the intermediate account's ephemeral keypair file with
+      `solana-keygen recover` and the following 12-word seed phrase:
+      ===========================================================================
+      trust inspire cargo agent issue column such control sunny blame very carbon
+      ===========================================================================
+      To resume a deploy, pass the recovered keypair as the
+      [BUFFER_SIGNER] to `solana program deploy` or `solana program write-buffer'.
+      Or to recover the account's lamports, pass it as the
+      [BUFFER_ACCOUNT_ADDRESS] argument to `solana program close`.
+      ===========================================================================
+      Error: Deploying program failed: RPC response error -32002: Transaction simulation failed: Error processing Instruction 0: account data too small for instruction [3 log messages]
+    //do
+    一般在合约部署之后，更新了代码，再升级时，报的错。因为首次部署后会给代码分配内存空间，第二次部署后，需要更多的空间，因此，执行命令
+     solana program extend prog111111111111111111111111111111111111111 20000[-u d -k ./authority_keypair.json]
+     其中：prog111111111111111111111111111111111111111是本次要部署的合约地址，authority_keypair.json是有权限升级合约的用户私钥
+
+
+     //Q 跨合约CPI调用时，报如下错误：
+      'Program KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD invoke [1]',
+      'Program log: Instruction: InitUserMetadata',
+      "BL728YZbuUtMrcu3FaFokuM1saFpTK93JSnVvZD8v6Jp's writable privilege escalated",
+      'Program KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD consumed 12093 of 200000 compute units',
+      'Program KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD failed: Cross-program invocation with unauthorized signer or writable account'
+      //do
+      我当时的背景是，A合约通过CPI调用B合约，而B合约是已部署到链上的合约，它有个account入参是个PDA地址，并且这个字段有init修饰。我在实现A合约通过CPI调用B合约时，为了方便编写，直接将这个account这样定义：`pub user_metadata: AccountInfo<'info>`,没有任何修饰。  后来给这个字段加上mut修饰之后，就可以了
 ```
