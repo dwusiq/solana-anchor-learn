@@ -182,5 +182,14 @@
     可以在项目根目录Cargo.lock搜索你不想要的那个版本，然后替换成另外一个想要保留的版本，重新编译解决
 
    //Q 编译最后显示一行：Error: IDL doesn't exist,并且没有生成IDL文件
-   //q anchor版本的问题，anchor --version查看版本，我从0.30.1切换到0.29.0之后就正常了： avm use 0.29.0
+   //do anchor版本的问题，anchor --version查看版本，我从0.30.1切换到0.29.0之后就正常了： avm use 0.29.0
+
+   //Q ts怎么从json文件导入为DIL对象：
+   //do
+      import { Idl } from '@coral-xyz/anchor';
+      import rawIdl from '/Users/qiang/Codes/TmpCode/flash-trade/flash-trade-cpi-caller/perpetuals.json';
+      export const idl: Idl = rawIdl as Idl;
+    如果报如下错误则在`tsconfig.json`加入 "esModuleInterop": true, "resolveJsonModule": true,：
+   Cannot find module '/Users/qiang/Codes/TmpCode/flash-trade/flash-trade-cpi-caller/perpetuals.json'. Consider using '--resolveJsonModule' to import module with '.json' extension.
+
 ```
