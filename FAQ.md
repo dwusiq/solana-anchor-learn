@@ -180,4 +180,7 @@
    //do
     solana_program版本冲突了，即使是我们通过cargo.toml指定了特定的版本，好像也不能解决一些间接依赖的版本冲突，查看当前的版本冲突cargo tree | grep solana-program
     可以在项目根目录Cargo.lock搜索你不想要的那个版本，然后替换成另外一个想要保留的版本，重新编译解决
+
+   //Q 编译最后显示一行：Error: IDL doesn't exist,并且没有生成IDL文件
+   //q anchor版本的问题，anchor --version查看版本，我从0.30.1切换到0.30.0之后就正常了： avm use 0.30.0
 ```
