@@ -162,4 +162,22 @@
       //do
       01、我当时的背景是，A合约通过CPI调用B合约，而B合约是已部署到链上的合约，它有个account入参是个PDA地址，并且这个字段有init修饰。我在实现A合约通过CPI调用B合约时，为了方便编写，直接将这个account这样定义：`pub user_metadata: AccountInfo<'info>`,没有任何修饰。  后来给这个字段加上mut修饰之后，就可以了
       02、后来又碰到一次传递Signer<'info>的，同样报这个错，是因为被CPI调用的函数，定义Signer<'info>是有`#[account(mut)]`修饰的，而调用发起合约的对应account却没被定义为可修改
+
+    //Q Error Message: Fallback functions are not supported.
+    //do
+    检查函数名是否不匹配
+
+    //Q Error: 413 Request Entity Too Large: {"jsonrpc":"2.0","id":"ab325f98-8a6f-432a-b8f2-c270c2f258e4","error":{"code":-32615,"message":"getMultipleAccounts is limited to a 5 range, upgrade from discover plan at quicknode.com to increase the limit"}}
+    //do 我当时是这句报错：`await KaminoMarket.load(connection, K_MARKET_ADDRESS, 200, kLendProgram.programId, true)`,后来替换了正确的K_MARKET_ADDRESS之后就没报错了
+
+   //Q  associated item not found in `TokenAccount`
+   //do 把Cargo.toml文件中idl-build = ["anchor-lang/idl-build"]替换为idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
+
+   //Q #[program]红色波浪线，并提示expected a return type
+   //do 函数声明缺少了返回参 “-> Result<()>”
+
+   //Q “error[E0659]: `solana_program` is ambiguous” 或 “perhaps two different versions of crate solana_program are being used?”
+   //do
+    solana_program版本冲突了，即使是我们通过cargo.toml指定了特定的版本，好像也不能解决一些间接依赖的版本冲突，查看当前的版本冲突cargo tree | grep solana-program
+    可以在项目根目录Cargo.lock搜索你不想要的那个版本，然后替换成另外一个想要保留的版本，重新编译解决
 ```
