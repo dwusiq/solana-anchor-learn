@@ -192,4 +192,7 @@
     如果报如下错误则在`tsconfig.json`加入 "esModuleInterop": true, "resolveJsonModule": true,：
    Cannot find module '/Users/qiang/Codes/TmpCode/flash-trade/flash-trade-cpi-caller/perpetuals.json'. Consider using '--resolveJsonModule' to import module with '.json' extension.
 
+  //Q 调用program的函数时，报错：AnchorError caused by account: token_program. Error Code: InvalidProgramId. Error Number: 3008. Error Message: Program ID was not as expected.',
+  //do
+  这种情况很可能是：1、字段值确实传错了。2、调用时传参的顺序跟program的IDL中acccount数组顺序不相同
 ```
