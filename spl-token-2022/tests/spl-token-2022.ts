@@ -91,7 +91,7 @@ describe("spl-token-2020", () => {
             ownerKeypair,  //付款账户
             splTokenMintKeyPair.publicKey, //代币Mint账户的pubKey
             mintRecipient.address,//接收者对应该代币的ADA地址
-            ownerKeypair,
+            ownerKeypair, 
             100,// 铸造的数量
         );
 

@@ -19,9 +19,9 @@
     
     //do ： 参考https://solana.com/developers/guides/getstarted/full-stack-solana-development
     //根据programId获得程序的大小(Data Length)
-    solana program show 3umsHbrUTKbgtJhuiihwnFFwmvn2AdXp8mmXFiW6UaQt
+    solana program show 5zB1vCeQxFXkbFiucPB4XqDWTuDNo5FFFYLH54kUh3pR
     //根据程序的progarmId扩展大小(直接填上面查到的结果)
-    solana program extend 3umsHbrUTKbgtJhuiihwnFFwmvn2AdXp8mmXFiW6UaQt 276128
+    solana program extend 5zB1vCeQxFXkbFiucPB4XqDWTuDNo5FFFYLH54kUh3pR 216680
 
     //直接执行测试命令，应该就能正常运行了
     anchor test --skip-local-validator
@@ -51,7 +51,7 @@
     //Q
     Error: AnchorError occurred. Error Code: InstructionDidNotDeserialize. Error Number: 102. Error Message: The program could not deserialize the given instruction.
     //do
-    入参跟合约定义的不相同
+    入参跟合约定义的不相同,注意有一些instruction的入参account定义时在头部加了类似这样的限制`[instruction(id: Pubkey)]`
 
     //Q
     Error: AnchorError occurred. Error Code: DeclaredProgramIdMismatch. Error Number: 4100. Error Message: The declared program id does not match the actual program id.
@@ -195,4 +195,18 @@
   //Q 调用program的函数时，报错：AnchorError caused by account: token_program. Error Code: InvalidProgramId. Error Number: 3008. Error Message: Program ID was not as expected.',
   //do
   这种情况很可能是：1、字段值确实传错了。2、调用时传参的顺序跟program的IDL中acccount数组顺序不相同
+
+  //Q 明明一个account已经被初始化，但在下一个函数调用时报错：Error Number: 3012. Error Message: The program expected this account to be already initialized.',
+  //do 这个一般发生在本地测试环境，选择finalized就不会发生这个问题，而另外两个很容易发生上面的问题，但是选择finalized的话，要等待很久，效率很低
+  关注点1: 初始化connection时
+  `export const provider = new AnchorProvider(connection, SIGNER_WALLET, { commitment: "processed", });//processed < confirmed < finalized`
+  关注点2: 交易发送后等待确认时commitment要填finalized
+  t = await connection.confirmTransaction(
+    {
+      blockhash: latestBlockHash.blockhash,
+      lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+      signature: txId,
+    },
+    commitment
+  );
 ```
