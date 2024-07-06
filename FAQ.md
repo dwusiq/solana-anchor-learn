@@ -198,9 +198,10 @@
 
   //Q 明明一个account已经被初始化，但在下一个函数调用时报错：Error Number: 3012. Error Message: The program expected this account to be already initialized.',
   //do 这个一般发生在本地测试环境，选择finalized就不会发生这个问题，而另外两个很容易发生上面的问题，但是选择finalized的话，要等待很久，效率很低
-  关注点1: 初始化connection时
+  关注点1: 需要修改数据的account，需要被标注为mut
+  关注点2: 初始化connection时
   `export const provider = new AnchorProvider(connection, SIGNER_WALLET, { commitment: "processed", });//processed < confirmed < finalized`
-  关注点2: 交易发送后等待确认时commitment要填finalized
+  关注点3: 交易发送后等待确认时commitment要填finalized
   t = await connection.confirmTransaction(
     {
       blockhash: latestBlockHash.blockhash,
