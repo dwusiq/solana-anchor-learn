@@ -209,5 +209,9 @@
       signature: txId,
     },
     commitment
-  );
+  );'
+  
+  //Q 调用时报错
+ 'Program log: AnchorError caused by account: nx_market. Error Code: AccountDidNotDeserialize. Error Number: 3003. Error Message: Failed to deserialize the account.',  //do
+  //do 合约部署之后再去修改存储结构,会导致这个问题
 ```
