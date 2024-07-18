@@ -214,4 +214,20 @@
   //Q 调用时报错
  'Program log: AnchorError caused by account: nx_market. Error Code: AccountDidNotDeserialize. Error Number: 3003. Error Message: Failed to deserialize the account.',  //do
   //do 合约部署之后再去修改存储结构,会导致这个问题
+
+  //Q 调用时报错
+  failed: Access violation in stack frame 5 at address 0x200005fd8 of size 8'
+  //do 有可能是函数定义入参的account太多了
+
+  //Q 前面的函数已经设置了某个account的属性值，但是后面的函数来读取时，发现该值没有变化
+  //do 设置account的属性时，用了clone，因此结果没有实际的存储下来
+
+ //Q 合约执行SPL转账时报错： Error: Account not associated with this Mint
+ //do 我当时是初始化ATA时，用的代币地址用错了
+
+//Q 在https://beta.solpg.io/部署合约一半中断了，但是钱包余额未恢复
+//do 关掉缓存池，取回余额：
+    1、查询当前缓存池信息：solana program show --buffers
+    2、关掉缓存池： solana program close GFMFqFBe2AxantAh426VmQpjxqHVgvCvQVVJXRkx6grL
+
 ```
