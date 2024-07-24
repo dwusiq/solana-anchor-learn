@@ -7,6 +7,8 @@ solana程序不能只看rust代码怎么写，得结合ts的调用方法，才�
 * build: `anchor build`
 * test: `anchor test --skip-local-validator`
 * 测试指定文件：`anchor test -t tests/counter-anchor.ts --verbose`
+* 如果入参账户是个struct，则用Box<>封装，这样数据会存放在堆，而不是栈，因为栈是有限的。如`Box<Account<'info, Mint>>` 替代`Account<'info,Mint>,`;
+
 
 ### 术语
 
