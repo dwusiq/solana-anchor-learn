@@ -19,9 +19,9 @@
     
     //do ： 参考https://solana.com/developers/guides/getstarted/full-stack-solana-development
     //根据programId获得程序的大小(Data Length)
-    solana program show 5zB1vCeQxFXkbFiucPB4XqDWTuDNo5FFFYLH54kUh3pR
+    solana program show 2F6TnddsXfLBxK6M1ZZ4GMC7uQUTPEgWpQSTQpcet4ar
     //根据程序的progarmId扩展大小(直接填上面查到的结果)
-    solana program extend 5zB1vCeQxFXkbFiucPB4XqDWTuDNo5FFFYLH54kUh3pR 216680
+    solana program extend 2F6TnddsXfLBxK6M1ZZ4GMC7uQUTPEgWpQSTQpcet4ar 180392
 
     //直接执行测试命令，应该就能正常运行了
     anchor test --skip-local-validator
@@ -229,5 +229,11 @@
 //do 关掉缓存池，取回余额：
     1、查询当前缓存池信息：solana program show --buffers
     2、关掉缓存池： solana program close GFMFqFBe2AxantAh426VmQpjxqHVgvCvQVVJXRkx6grL
+
+//执行anchor test报错：`Error: RPC request error: cluster version query failed: HTTP status server error (503 Service Unavailable) for url (http://127.0.0.1:8899/)`
+//do 可能是本地验证节点没有启动，执行solana-test-validator启动
+
+//Q 执行anchor test 报错：IdlError: Type not found: {"type":{"defined":"NxPresalePeriod"}}
+//do 可能是某个struct定义为#[account],实际上不是pda，而是pda里面的一个属性,因此需要定义为#[derive(Default)]而不是#[account]
 
 ```
