@@ -19,9 +19,9 @@
     
     //do ： 参考https://solana.com/developers/guides/getstarted/full-stack-solana-development
     //根据programId获得程序的大小(Data Length)
-    solana program show 2F6TnddsXfLBxK6M1ZZ4GMC7uQUTPEgWpQSTQpcet4ar
+    solana program show 6Ryyo5EZsSPjeCwKAuCmuwppW5L7rVJ6FRPfHHDVKSE6
     //根据程序的progarmId扩展大小(直接填上面查到的结果)
-    solana program extend 2F6TnddsXfLBxK6M1ZZ4GMC7uQUTPEgWpQSTQpcet4ar 180392
+    solana program extend 6Ryyo5EZsSPjeCwKAuCmuwppW5L7rVJ6FRPfHHDVKSE6 341952
 
     //直接执行测试命令，应该就能正常运行了
     anchor test --skip-local-validator
@@ -235,5 +235,8 @@
 
 //Q 执行anchor test 报错：IdlError: Type not found: {"type":{"defined":"NxPresalePeriod"}}
 //do 可能是某个struct定义为#[account],实际上不是pda，而是pda里面的一个属性,因此需要定义为#[derive(Default)]而不是#[account]
+
+//Q 调用instruction时报错：  TypeError: src.toTwos is not a function
+//do     const value = new BN(123); // 确保这是一个 BN 对象
 
 ```
