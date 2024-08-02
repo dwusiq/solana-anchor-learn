@@ -17,7 +17,7 @@ describe("countor-anchor", () => {
     //专门给counter随机新建一个用户
     const counterKeyPair = new Keypair();
     it("Init Counter-Anchor", async () => {
-        await program.methods.initialize(new anchor.BN(10)).accounts({
+        await program.methods.initialize(new anchor.BN(-10)).accounts({
             payer: payer.publicKey,
             counter: counterKeyPair.publicKey//以后就可由counterKeyPair.publicKey指向这个counter的数据地址
         }).signers([counterKeyPair]).rpc();//TODO ??? 为什么不是payer???

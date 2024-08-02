@@ -1,12 +1,13 @@
 use anchor_lang::prelude::*;
 
-declare_id!("ArPdSi8RvUFVtcq294vzEun4PuUYxyL4biLFAGKofP2C");
+declare_id!("9Mye4h5NaCYyN9EDiXWeNx3HznbwjpvxDXyLNga7hXbA");
 
 #[program]
 pub mod counter_anchor {
     use super::*;
 
-    pub fn initialize(_ctx: Context<InitializeCounter>, _init_data: u64) -> Result<()> {
+    pub fn initialize(_ctx: Context<InitializeCounter>, _init_data: i64) -> Result<()> {
+        msg!("_init_data:{}",_init_data);
         _ctx.accounts.counter.data = _init_data;//此时InitializeCounter结构体的数据已存在于
         Ok(())
     }
@@ -36,5 +37,5 @@ pub struct IncreaseCounter<'info> {
 #[account]
 #[derive(InitSpace)]
 pub struct CounterData {
-    data: u64,
+    data: i64,
 }
