@@ -5,13 +5,13 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-counter_anchor = "9Mye4h5NaCYyN9EDiXWeNx3HznbwjpvxDXyLNga7hXbA"
+merkle_tree_demo = "6UE9mhnmKzQdKUATJF7YYfpb49hh7Q5DJMKeD3XLy6Bi"
 
 [registry]
-url = "https://api.devnet.solana.com"
+url = "http://127.0.0.1:8899"
 
 [provider]
-cluster = "https://api.devnet.solana.com"
+cluster = "http://127.0.0.1:8899"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
