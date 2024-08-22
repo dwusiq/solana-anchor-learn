@@ -8,10 +8,10 @@ skip-lint = false
 counter_anchor = "9Mye4h5NaCYyN9EDiXWeNx3HznbwjpvxDXyLNga7hXbA"
 
 [registry]
-url = "https://api.devnet.solana.com"
+url = "https://api.apr.dev"
 
 [provider]
-cluster = "https://api.devnet.solana.com"
+cluster = "http://127.0.0.1:8899"
 wallet = "~/.config/solana/id.json"
 
 [scripts]

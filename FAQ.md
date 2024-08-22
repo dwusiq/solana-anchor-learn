@@ -19,9 +19,9 @@
     
     //do ： 参考https://solana.com/developers/guides/getstarted/full-stack-solana-development
     //根据programId获得程序的大小(Data Length)
-    solana program show 6Ryyo5EZsSPjeCwKAuCmuwppW5L7rVJ6FRPfHHDVKSE6
+    solana program show 9bZPpY9zAGQEkzXDvfsHHAADGJb7TtdCQRAF6daeqBKg
     //根据程序的progarmId扩展大小(直接填上面查到的结果)
-    solana program extend 6Ryyo5EZsSPjeCwKAuCmuwppW5L7rVJ6FRPfHHDVKSE6 341952
+    solana program extend 9bZPpY9zAGQEkzXDvfsHHAADGJb7TtdCQRAF6daeqBKg 359368
 
     //直接执行测试命令，应该就能正常运行了
     anchor test --skip-local-validator
