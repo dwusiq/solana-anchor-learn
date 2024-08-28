@@ -93,7 +93,14 @@
     执行下面这句初始化program的语句时，报错：“TypeError: Cannot read properties of undefined (reading 'instructions')”
     export const program = new Program(IDL as anchor.Idl, LEVERAGE_KAMINO_PROGRAM_ID_PK, provider);
     //do
-    这种情况大概率是programId和IDL文件没匹配（检查IDL文件）
+    这种情况大概率是programId和IDL文件没匹配（检查IDL文件）,特别注意点是有两种初始化program的方式，相互切换看哪种不报错
+    import * as nxPresale from "./idl/nx_presale.json";
+    let currentProgram = new Program(nxPresale as anchor.Idl, PROGRAM_ID, DEFAULT_PROVIDER);
+
+    import { IDL as nxPresaleIdl } from "./idl/nx_presale";
+    let currentProgram =  new Program(nxPresaleIdl as anchor.Idl, PROGRAM_ID, DEFAULT_PROVIDER);
+
+
 
 
     //Q  
