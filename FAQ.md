@@ -11,6 +11,8 @@
     //do
     https://crates.io/search?q=solana-program 找到所提示rust版本所匹配的solana-program版本(其他包也同理)
     cargo update -p solana-program@1.18.12 --precise  1.18.7
+    也可能是solana-cli版本过低,solana --version查看，solana-install init 1.18.17安装指定版本
+
 
 
     //Q
